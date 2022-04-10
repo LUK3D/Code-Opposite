@@ -1,0 +1,17 @@
+#root{
+  overflow-x: hidden;
+}
+.thinLine{
+  height: 1px;
+}
+
+.c-container{
+  height: 70vh;
+}
+.skills-card{
+  height: 250px;
+}
+
+.footer{
+  height:300px;
+}
