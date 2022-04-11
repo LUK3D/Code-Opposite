@@ -58,9 +58,9 @@ const data = [
 const ProjectSetup = () => {
   const [active, setActive] = useState(1);
   const nextStep = () =>
-    setActive((current) => (current < 3 ? current + 1 : current));
+  setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>
-    setActive((current) => (current > 0 ? current - 1 : current));
+  setActive((current) => (current > 0 ? current - 1 : current));
 
   const [DBData, setDatabaseData] = useState({
     entities: [
@@ -88,6 +88,54 @@ const ProjectSetup = () => {
       },
     ],
   });
+
+
+  function addEntity() {
+    var dbdata = {...DBData};
+    
+    dbdata.entities.push({
+      name: "",
+      columns: [
+        {
+          name: "id",
+          primary:true
+        },
+       
+      ],
+    });
+    setDatabaseData(dbdata);
+  }
+  function addEntityField(entityIndex:number) {
+    var dbdata = {...DBData};
+    
+    dbdata.entities[entityIndex].columns.push({
+      name: ""
+    });
+    setDatabaseData(dbdata);
+  }
+
+  function deleteEntity(index:number) {
+    var dbdata = {...DBData};
+    dbdata.entities.splice(index,1);
+    setDatabaseData(dbdata);
+  }
+
+  function deleteEntityField(entityIndex:number, fieldIndex:number) {
+    var dbdata = {...DBData};
+    dbdata.entities[entityIndex].columns.splice(fieldIndex,1);
+    setDatabaseData(dbdata);
+  }
+
+  function editEntityName(index:number,value:string){
+    var dbdata = {...DBData};
+    dbdata.entities[index].name = value;
+    setDatabaseData(dbdata);
+  }
+  function EditEntityField(entityIndex:number, fieldIndex:number, value:string) {
+    var dbdata = {...DBData};
+    dbdata.entities[entityIndex].columns[fieldIndex].name = value;
+    setDatabaseData(dbdata);
+  }
 
   const [opened, setOpened] = useState(true);
   return (
@@ -200,12 +248,15 @@ const ProjectSetup = () => {
                 <Button onClick={nextStep}>Next step</Button>
             </Group> */}
 
-              <ScrollArea className="w-full h-[calc(100%-4rem)] flex flex-col px-2">
+              <ScrollArea className="w-full max-h-[calc(100%-4rem)] flex flex-col px-2">
                 {DBData.entities.map((entity, index) => {
                   return (
                     <LukEntityComponent
                       key={entity.name}
                       title={entity.name}
+                      onDeleteEntity={()=>{
+                        deleteEntity(index);
+                      }}
                       body={
                       
                       <div className="px-4 bg-dark-200 w-full py-2 pl-10   ">
@@ -216,6 +267,12 @@ const ProjectSetup = () => {
                                     icon={<BsLayoutThreeColumns></BsLayoutThreeColumns>}
                                     key={cols.name}
                                     title={cols.name}
+                                    onDeleteEntity={
+                                      ()=>{
+                                        
+                                        deleteEntityField(index, index2);
+                                      }
+                                    }
                                     body={
                                         <div className="px-4 pl-10 bg-dark-200 w-full py-2 grid grid-cols-6 gap-4 pb-10  ">
                                             <Select
@@ -348,6 +405,11 @@ const ProjectSetup = () => {
                         leftIcon={
                             <RiInsertColumnRight fontSize={25}></RiInsertColumnRight>
                         }
+                        onClick={
+                          ()=>{
+                            addEntityField(index);
+                          }
+                        }
                         variant="default" className="col-span-2 text-text-100   ">
                             Add Column
                         </Button>
@@ -360,15 +422,19 @@ const ProjectSetup = () => {
                     />
                   );
                 })}
-                <Button 
-                        leftIcon={
-                            <MdAddCircleOutline  className="text-text-100" fontSize={25}></MdAddCircleOutline>
-                        }
-                        variant="default" className="col-span-2 text-text-100   ">
-                            Add Entity
-                        </Button>
+               
               </ScrollArea>
+              <Button 
+                leftIcon={
+                    <MdAddCircleOutline  className="text-text-100" fontSize={25}></MdAddCircleOutline>
+                }
+                variant="default" className="col-span-2 text-text-100"
+                onClick={()=>{addEntity()}}
+                >
+                    Add Entity
+                </Button>
             </div>
+            
           </div>
         }
       </Modal>

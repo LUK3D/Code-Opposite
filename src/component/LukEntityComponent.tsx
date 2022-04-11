@@ -4,7 +4,7 @@ import { BsChevronExpand } from "react-icons/bs";
 import { RiDeleteBinLine, RiTableLine } from "react-icons/ri";
 import { LukToolTip } from "./LukToolTip";
 
-export function LukEntityComponent(args: { title?: string; body: ReactNode,icon?:ReactNode }) {
+export function LukEntityComponent(args: { title?: string; body: ReactNode,icon?:ReactNode, onDeleteEntity?:Function, onEditName:Function}) {
     const [opened, setOpen] = useState(false);
   
     return (
@@ -15,6 +15,13 @@ export function LukEntityComponent(args: { title?: string; body: ReactNode,icon?
             placeholder="Entity name"
             defaultValue={args.title}
             rightSectionWidth={150}
+           
+            onChange={
+                (ev)=>{
+                    if(args.onEditName)
+                    args.onEditName(ev.target.value)
+                }
+            }
             rightSection={
                 <div className="flex items-center ">
                     
@@ -22,7 +29,8 @@ export function LukEntityComponent(args: { title?: string; body: ReactNode,icon?
                       leftIcon={<RiDeleteBinLine className="text-gray-400" fontSize={20}></RiDeleteBinLine>}
                       variant="default"
                       size="xs"
-                      onClick={() => setOpen((o) => !o)}
+                      
+                      onClick={args.onDeleteEntity}
                       ></Button>
                     <Button
                       leftIcon={<BsChevronExpand className="text-gray-400" fontSize={20}></BsChevronExpand>}
