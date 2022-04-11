@@ -1,13 +1,12 @@
-import { forwardRef, ReactNode, useState } from "react";
-import { BsBoxSeam, BsChevronExpand, BsInputCursorText, BsLayoutThreeColumns } from "react-icons/bs";
-import { BorderDark } from "../utils/colors";
+import { useState } from "react";
+import { BsBoxSeam,  BsInputCursorText, BsLayoutThreeColumns } from "react-icons/bs";
 import { HiOutlineDatabase } from "react-icons/hi";
 import { GrMysql } from "react-icons/gr";
 import { DiMsqlServer, DiSqllite } from "react-icons/di";
 import { SiMongodb } from "react-icons/si";
 import { FiHardDrive, FiLink2 } from "react-icons/fi";
-import { AiOutlineInfoCircle, AiOutlineUser,AiOutlineNodeIndex } from "react-icons/ai";
-import { RiLockPasswordLine, RiTableLine,RiInsertColumnRight,RiDeleteBinLine } from "react-icons/ri";
+import {  AiOutlineUser,AiOutlineNodeIndex } from "react-icons/ai";
+import { RiLockPasswordLine, RiInsertColumnRight } from "react-icons/ri";
 import { BsNodePlus } from "react-icons/bs";
 import { MdAddCircleOutline } from "react-icons/md";
 import { DataTypes,Charset } from "../utils/constants";
@@ -16,14 +15,10 @@ import {
   Modal,
   Button,
   Input,
-  Group,
-  Tooltip,
-  Text,
   Select,
   PasswordInput,
   Stepper,
   ScrollArea,
-  Collapse,
   NumberInput,
   Checkbox,
 } from "@mantine/core";
