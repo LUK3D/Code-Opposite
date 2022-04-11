@@ -27,6 +27,9 @@ import {
   NumberInput,
   Checkbox,
 } from "@mantine/core";
+import { Luk_SelectItem } from "../component/LukSelectItem";
+import { LukToolTip } from "../component/LukToolTip";
+import { LukEntityComponent } from "../component/LukEntityComponent";
 
 const data = [
   {
@@ -55,83 +58,6 @@ const data = [
     description: "Not just a sponge",
   },
 ];
-
-interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
-  image: ReactNode;
-  label: string;
-  description: string;
-}
-
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ image, label, description, ...others }: ItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <div className="text-2xl">{image}</div>
-
-        <div>
-          <Text size="sm">{label}</Text>
-          <Text size="xs" color="dimmed">
-            {description}
-          </Text>
-        </div>
-      </Group>
-    </div>
-  )
-);
-
-const rightSection = (text: string) => (
-  <Tooltip label={text} position="top" placement="end">
-    <AiOutlineInfoCircle></AiOutlineInfoCircle>
-  </Tooltip>
-);
-
-function EntityComponent(args: { title?: string; body: ReactNode,icon?:ReactNode }) {
-  const [opened, setOpen] = useState(false);
-
-  return (
-    <>
-      <div className="flex bg-dark-100 border-b border-dark-500 ">
-        <Input
-          icon={(args.icon !=null)?args.icon:<RiTableLine></RiTableLine>}
-          placeholder="Entity name"
-          defaultValue={args.title}
-          rightSectionWidth={150}
-          rightSection={
-              <div className="flex items-center ">
-                  
-                  <Button
-                    leftIcon={<RiDeleteBinLine className="text-gray-400" fontSize={20}></RiDeleteBinLine>}
-                    variant="default"
-                    size="xs"
-                    onClick={() => setOpen((o) => !o)}
-                    ></Button>
-                  <Button
-                    leftIcon={<BsChevronExpand className="text-gray-400" fontSize={20}></BsChevronExpand>}
-                    variant="default"
-                    size="xs"
-                    onClick={() => setOpen((o) => !o)}
-                    ></Button>
-                    <div className="mt-1">
-                    {rightSection("Entity name")}
-                    </div>
-              </div>
-          }
-          classNames={
-              {
-                  input:"font-bold"
-              }
-          }
-        />
-        
-      </div>
-
-      <Collapse in={opened} className="w-full">
-        {args.body}
-      </Collapse>
-    </>
-  );
-}
-
 
 
 const ProjectSetup = () => {
@@ -198,7 +124,7 @@ const ProjectSetup = () => {
                   label="Build API"
                   description="Generate Project Rest API"
                 ></Stepper.Step>
-                <Stepper.Completed></Stepper.Completed>
+                <Stepper.Completed children={null}></Stepper.Completed>
               </Stepper>
             </div>
           </div>
@@ -220,19 +146,19 @@ const ProjectSetup = () => {
               <Input
                 icon={<BsInputCursorText></BsInputCursorText>}
                 placeholder="Project Name"
-                rightSection={rightSection("Project Name")}
+                rightSection={LukToolTip("Project Name")}
               />
               <Select
                 icon={<HiOutlineDatabase></HiOutlineDatabase>}
-                rightSection={rightSection("Database Engine")}
+                rightSection={LukToolTip("Database Engine")}
                 placeholder="Database Engine"
-                itemComponent={SelectItem}
+                itemComponent={Luk_SelectItem}
                 data={data}
                 searchable
                 maxDropdownHeight={400}
                 nothingFound="No match..."
                 filter={(value, item) =>
-                  item.label
+                  item.label!
                     .toLowerCase()
                     .includes(value.toLowerCase().trim()) ||
                   item.description
@@ -245,31 +171,31 @@ const ProjectSetup = () => {
               <Input
                 icon={<FiHardDrive></FiHardDrive>}
                 placeholder="Project Location"
-                rightSection={rightSection("Project Location")}
+                rightSection={LukToolTip("Project Location")}
                 className="mt-4"
               />
               <Input
                 icon={<FiLink2></FiLink2>}
                 placeholder="Host"
-                rightSection={rightSection("Server Url")}
+                rightSection={LukToolTip("Server Url")}
                 className="mt-4"
               />
               <Input
                 icon={<AiOutlineUser></AiOutlineUser>}
                 placeholder="Username"
-                rightSection={rightSection("Server Username")}
+                rightSection={LukToolTip("Server Username")}
                 className="mt-4"
               />
               <PasswordInput
                 icon={<RiLockPasswordLine></RiLockPasswordLine>}
                 placeholder="Password"
-                rightSection={rightSection("Server Password")}
+                rightSection={LukToolTip("Server Password")}
                 className="mt-4"
               />
               <Input
                 icon={<BsInputCursorText></BsInputCursorText>}
                 placeholder="Database Name"
-                rightSection={rightSection("Database Name")}
+                rightSection={LukToolTip("Database Name")}
                 className="mt-4"
               />
             </div>
@@ -282,7 +208,7 @@ const ProjectSetup = () => {
               <ScrollArea className="w-full h-[calc(100%-4rem)] flex flex-col px-2">
                 {DBData.entities.map((entity, index) => {
                   return (
-                    <EntityComponent
+                    <LukEntityComponent
                       key={entity.name}
                       title={entity.name}
                       body={
@@ -291,7 +217,7 @@ const ProjectSetup = () => {
                         {
                             entity.columns.map((cols,index2)=>{
                                 return (
-                                    <EntityComponent
+                                    <LukEntityComponent
                                     icon={<BsLayoutThreeColumns></BsLayoutThreeColumns>}
                                     key={cols.name}
                                     title={cols.name}
@@ -305,8 +231,8 @@ const ProjectSetup = () => {
                                                 className="col-span-3"
                                                 />
                                               <NumberInput
-                                                placeholder="Length"
                                                 label="Length"
+                                                placeholder="Length"
                                                 className="col-span-3"
                                                 />
 
@@ -334,10 +260,10 @@ const ProjectSetup = () => {
 
                                                 <div className="col-span-3 pt-7">
                                                 <Input
+                                                placeholder="Default Value"
                                                 aria-label=""
                                                     icon={<BsInputCursorText></BsInputCursorText>}
-                                                    placeholder="Default Value"
-                                                    rightSection={rightSection("Default Value")}
+                                                    rightSection={LukToolTip("Default Value")}
                                                     className="w-full"
                                                 />
                                                 </div>
