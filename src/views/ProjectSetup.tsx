@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { BsBoxSeam,  BsInputCursorText, BsLayoutThreeColumns } from "react-icons/bs";
 import { HiOutlineDatabase } from "react-icons/hi";
 import { GrMysql } from "react-icons/gr";
@@ -90,10 +90,43 @@ const ProjectSetup = () => {
   });
 
 
+  const _reducerFunc = ()=>{
+      
+  }
+
+
+    const [state, dispatch] = useReducer(_reducerFunc,{
+        entities: [
+          {
+            name: "Users",
+            columns: [
+              {
+                name: "Username",
+              },
+              {
+                name: "Password",
+              },
+            ],
+          },
+          {
+            name: "Messages",
+            columns: [
+              {
+                name: "From",
+              },
+              {
+                name: "To",
+              },
+            ],
+          },
+        ],
+ });
+
+
+
   function addEntity() {
-    var dbdata = {...DBData};
     
-    dbdata.entities.push({
+    DBData.entities.push({
       name: "",
       columns: [
         {
@@ -103,39 +136,30 @@ const ProjectSetup = () => {
        
       ],
     });
-    setDatabaseData(dbdata);
+    setDatabaseData({...DBData});
+
+    console.warn(">", DBData);
   }
   function addEntityField(entityIndex:number) {
-    var dbdata = {...DBData};
     
-    dbdata.entities[entityIndex].columns.push({
+    DBData.entities[entityIndex].columns.push({
       name: ""
     });
-    setDatabaseData(dbdata);
+    setDatabaseData({...DBData});
   }
 
   function deleteEntity(index:number) {
-    var dbdata = {...DBData};
-    dbdata.entities.splice(index,1);
-    setDatabaseData(dbdata);
+    DBData.entities.splice(index,1);
+    setDatabaseData({...DBData});
   }
 
   function deleteEntityField(entityIndex:number, fieldIndex:number) {
-    var dbdata = {...DBData};
-    dbdata.entities[entityIndex].columns.splice(fieldIndex,1);
-    setDatabaseData(dbdata);
+    DBData.entities[entityIndex].columns.splice(fieldIndex,1);
+    setDatabaseData({...DBData});
   }
 
-  function editEntityName(index:number,value:string){
-    var dbdata = {...DBData};
-    dbdata.entities[index].name = value;
-    setDatabaseData(dbdata);
-  }
-  function EditEntityField(entityIndex:number, fieldIndex:number, value:string) {
-    var dbdata = {...DBData};
-    dbdata.entities[entityIndex].columns[fieldIndex].name = value;
-    setDatabaseData(dbdata);
-  }
+  
+
 
   const [opened, setOpened] = useState(true);
   return (
@@ -254,6 +278,10 @@ const ProjectSetup = () => {
                     <LukEntityComponent
                       key={entity.name}
                       title={entity.name}
+
+                      onEditName={(val:string)=>{
+                        DBData.entities[index].name = val;
+                      }}
                       onDeleteEntity={()=>{
                         deleteEntity(index);
                       }}
@@ -265,8 +293,11 @@ const ProjectSetup = () => {
                                 return (
                                     <LukEntityComponent
                                     icon={<BsLayoutThreeColumns></BsLayoutThreeColumns>}
-                                    key={cols.name}
+                                    key={entity.name+"_"+ cols.name}
                                     title={cols.name}
+                                    onEditName={(val:string)=>{
+                                        DBData.entities[index].columns[index2].name = val;
+                                      }}
                                     onDeleteEntity={
                                       ()=>{
                                         
