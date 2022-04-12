@@ -8,7 +8,7 @@ import { FiHardDrive, FiLink2 } from "react-icons/fi";
 import {  AiOutlineUser,AiOutlineNodeIndex } from "react-icons/ai";
 import { RiLockPasswordLine, RiInsertColumnRight } from "react-icons/ri";
 import { BsNodePlus } from "react-icons/bs";
-import { MdAddCircleOutline } from "react-icons/md";
+import { MdAddCircleOutline, MdOutlineRule } from "react-icons/md";
 import { DataTypes,Charset } from "../utils/constants";
 
 import {
@@ -25,6 +25,7 @@ import {
 import { Luk_SelectItem } from "../component/LukSelectItem";
 import { LukToolTip } from "../component/LukToolTip";
 import { LukEntityComponent } from "../component/LukEntityComponent";
+import { ValidationRules } from "../utils/validations";
 
 const data = [
   {
@@ -363,9 +364,33 @@ const ProjectSetup = () => {
                                                 className="col-span-3"
                                                 />
 
-                                                <div className="col-span-6 grid grid-cols-12">
-                                                    <div className="flex text-yellow-600 col-span-12">
+                                                <div className="col-span-6 grid grid-cols-12 ">
+                                                    <div className=" col-span-12 grid grid-cols-12 items-end gap-4">
+                                                        <div className="flex text-yellow-600 col-span-6">
                                                         <AiOutlineNodeIndex fontSize={25}></AiOutlineNodeIndex> <p>Relationships</p>
+                                                        </div>
+
+                                                        <div className=" col-span-6">
+                                                        <Select
+                                                          icon={<MdOutlineRule></MdOutlineRule>}
+                                                          rightSection={LukToolTip("Validation Rules")}
+                                                          placeholder="Validation Rules"
+                                                          itemComponent={Luk_SelectItem}
+                                                          data={ValidationRules}
+                                                          searchable
+                                                          maxDropdownHeight={400}
+                                                          nothingFound="No match..."
+                                                          filter={(value, item) =>
+                                                            item.label!
+                                                              .toLowerCase()
+                                                              .includes(value.toLowerCase().trim()) ||
+                                                            item.description
+                                                              .toLowerCase()
+                                                              .includes(value.toLowerCase().trim())
+                                                          }
+                                                          className="mt-4"
+                                                        />
+                                                        </div>
                                                     </div>
                                                     <div className="col-span-12 grid grid-cols-9 mt-2 gap-4 py-2 border-t border-b border-dark-500">
                                                         <p className="col-span-3 ">Entity</p>
