@@ -1,15 +1,13 @@
-import { useReducer, useState } from "react";
-import { BsBoxSeam,  BsInputCursorText, BsLayoutThreeColumns } from "react-icons/bs";
+import { useState } from "react";
+import { BsBoxSeam,  BsInputCursorText } from "react-icons/bs";
 import { HiOutlineDatabase } from "react-icons/hi";
 import { GrMysql } from "react-icons/gr";
 import { DiMsqlServer, DiSqllite } from "react-icons/di";
 import { SiMongodb } from "react-icons/si";
 import { FiHardDrive, FiLink2 } from "react-icons/fi";
-import {  AiOutlineUser,AiOutlineNodeIndex } from "react-icons/ai";
-import { RiLockPasswordLine, RiInsertColumnRight } from "react-icons/ri";
-import { BsNodePlus } from "react-icons/bs";
-import { MdAddCircleOutline, MdOutlineRule } from "react-icons/md";
-import { DataTypes,Charset } from "../utils/constants";
+import {  AiOutlineUser } from "react-icons/ai";
+import { RiLockPasswordLine } from "react-icons/ri";
+
 
 import {
   Modal,
@@ -17,15 +15,11 @@ import {
   Input,
   Select,
   PasswordInput,
-  Stepper,
-  ScrollArea,
-  NumberInput,
-  Checkbox,
+  Stepper
 } from "@mantine/core";
 import { Luk_SelectItem } from "../component/LukSelectItem";
 import { LukToolTip } from "../component/LukToolTip";
-import { LukEntityComponent } from "../component/LukEntityComponent";
-import { ValidationRules } from "../utils/validations";
+import EntitiesSetup from "./EntitiesSetup";
 
 const data = [
   {
@@ -91,37 +85,37 @@ const ProjectSetup = () => {
   });
 
 
-  const _reducerFunc = ()=>{
+//   const _reducerFunc = ()=>{
       
-  }
+//   }
 
 
-    const [state, dispatch] = useReducer(_reducerFunc,{
-        entities: [
-          {
-            name: "Users",
-            columns: [
-              {
-                name: "Username",
-              },
-              {
-                name: "Password",
-              },
-            ],
-          },
-          {
-            name: "Messages",
-            columns: [
-              {
-                name: "From",
-              },
-              {
-                name: "To",
-              },
-            ],
-          },
-        ],
- });
+//     const [state, dispatch] = useReducer(_reducerFunc,{
+//         entities: [
+//           {
+//             name: "Users",
+//             columns: [
+//               {
+//                 name: "Username",
+//               },
+//               {
+//                 name: "Password",
+//               },
+//             ],
+//           },
+//           {
+//             name: "Messages",
+//             columns: [
+//               {
+//                 name: "From",
+//               },
+//               {
+//                 name: "To",
+//               },
+//             ],
+//           },
+//         ],
+//  });
 
 
 
@@ -267,230 +261,21 @@ const ProjectSetup = () => {
                 className="mt-4"
               />
             </div>
-            <div className={"col-span-9 h-full overflow-hidden flx flex-col"}>
-              {/* <Group position="center" mt="xl">
-                <Button variant="default" onClick={prevStep}>Back</Button>
-                <Button onClick={nextStep}>Next step</Button>
-            </Group> */}
+            <div className="col-span-9 h-full overflow-hidden flex flex-col ">
+            {
+              active == 0?<EntitiesSetup DBData={DBData} deleteEntity={deleteEntity} deleteEntityField={deleteEntityField} addEntityField={addEntityField} addEntity={addEntity}  ></EntitiesSetup>
+              :<></>
+            }
 
-              <ScrollArea className="w-full max-h-[calc(100%-4rem)] flex flex-col px-2">
-                {DBData.entities.map((entity, index) => {
-                  return (
-                    <LukEntityComponent
-                      key={entity.name}
-                      title={entity.name}
-
-                      onEditName={(val:string)=>{
-                        DBData.entities[index].name = val;
-                      }}
-                      onDeleteEntity={()=>{
-                        deleteEntity(index);
-                      }}
-                      body={
-                      
-                      <div className="px-4 bg-dark-200 w-full py-2 pl-10   ">
-                        {
-                            entity.columns.map((cols,index2)=>{
-                                return (
-                                    <LukEntityComponent
-                                    icon={<BsLayoutThreeColumns></BsLayoutThreeColumns>}
-                                    key={entity.name+"_"+ cols.name}
-                                    title={cols.name}
-                                    onEditName={(val:string)=>{
-                                        DBData.entities[index].columns[index2].name = val;
-                                      }}
-                                    onDeleteEntity={
-                                      ()=>{
-                                        
-                                        deleteEntityField(index, index2);
-                                      }
-                                    }
-                                    body={
-                                        <div className="px-4 pl-10 bg-dark-200 w-full py-2 grid grid-cols-6 gap-4 pb-10  ">
-                                            <Select
-                                                label="Datatype"
-                                                placeholder="Datatype"
-                                                searchable
-                                                data={DataTypes}
-                                                className="col-span-3"
-                                                />
-                                              <NumberInput
-                                                label="Length"
-                                                placeholder="Length"
-                                                className="col-span-3"
-                                                />
-
-                                                <div className="col-span-3 grid grid-cols-3">
-                                                <Checkbox
-                                                    label="Allow NULL"
-                                                    className="col-span-1"
-                                                    />
-                                                <Checkbox
-                                                    label="Primary Key"
-                                                    className="col-span-1"
-                                                    />
-                                                <Checkbox
-                                                    label="Auto Increment"
-                                                    className="col-span-1"
-                                                    />
-                                                </div>
-                                                <Select
-                                                label="Charset"
-                                                placeholder="Charset"
-                                                searchable
-                                                data={Charset}
-                                                className="col-span-3"
-                                                />
-
-                                                <div className="col-span-3 pt-7">
-                                                <Input
-                                                placeholder="Default Value"
-                                                aria-label=""
-                                                    icon={<BsInputCursorText></BsInputCursorText>}
-                                                    rightSection={LukToolTip("Default Value")}
-                                                    className="w-full"
-                                                />
-                                                </div>
-                                                <Select
-                                                label="Validation Rule"
-                                                placeholder="Validation Rule"
-                                                searchable
-                                                data={[
-                                                    { value: 'Varchar', label: 'Varchar' },
-                                                    { value: 'Int', label: 'Int' },
-                                                    { value: 'Text', label: 'Text' },
-                                                    { value: 'TimeStamp', label: 'TimeStamp' },
-                                                ]}
-                                                className="col-span-3"
-                                                />
-
-                                                <div className="col-span-6 grid grid-cols-12 ">
-                                                    <div className=" col-span-12 grid grid-cols-12 items-end gap-4">
-                                                        <div className="flex text-yellow-600 col-span-6">
-                                                        <AiOutlineNodeIndex fontSize={25}></AiOutlineNodeIndex> <p>Relationships</p>
-                                                        </div>
-
-                                                        <div className=" col-span-6">
-                                                        <Select
-                                                          icon={<MdOutlineRule></MdOutlineRule>}
-                                                          rightSection={LukToolTip("Validation Rules")}
-                                                          placeholder="Validation Rules"
-                                                          itemComponent={Luk_SelectItem}
-                                                          data={ValidationRules}
-                                                          searchable
-                                                          maxDropdownHeight={400}
-                                                          nothingFound="No match..."
-                                                          filter={(value, item) =>
-                                                            item.label!
-                                                              .toLowerCase()
-                                                              .includes(value.toLowerCase().trim()) ||
-                                                            item.description
-                                                              .toLowerCase()
-                                                              .includes(value.toLowerCase().trim())
-                                                          }
-                                                          className="mt-4"
-                                                        />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-span-12 grid grid-cols-9 mt-2 gap-4 py-2 border-t border-b border-dark-500">
-                                                        <p className="col-span-3 ">Entity</p>
-                                                        <p className="col-span-3 ">Relation Type</p>
-                                                        <p className="col-span-3 ">Relation Field</p>
-                                                    </div>
-                                                    <div className="col-span-12 grid grid-cols-9 mt-2  gap-4 ">
-                                                        <Select
-                                                            placeholder="Entity"
-                                                            searchable
-                                                            data={[
-                                                                ...DBData.entities.map(x=>{
-                                                                    return x = {
-                                                                        name:x.name,
-                                                                        label:x.name,
-                                                                        value:x.name
-                                                                    }
-                                                                })
-                                                            ]}
-                                                            className="col-span-3"
-                                                            />
-                                                        <Select
-                                                            placeholder="Entity"
-                                                            searchable
-                                                            data={[
-                                                                { value: 'Has Many', label: 'Has Many' },
-                                                                { value: 'Has One', label: 'Has One' },
-                                                            ]}
-                                                            className="col-span-3"
-                                                            />
-                                                        <Select
-                                                            placeholder="Relation Field"
-                                                            searchable
-                                                            data={[
-                                                                { value: 'Has Many', label: 'Has Many' },
-                                                                { value: 'Has One', label: 'Has One' },
-                                                                { value: 'Text', label: 'Text' },
-                                                                { value: 'TimeStamp', label: 'TimeStamp' },
-                                                            ]}
-                                                            className="col-span-3"
-                                                            />
-                                                    </div>
-                                                    <div className="col-span-12 grid grid-cols-9 mt-2  gap-4 ">
-                                                    <Button 
-                                                    leftIcon={
-                                                        <BsNodePlus fontSize={25}></BsNodePlus>
-                                                    }
-                                                    variant="default" className="col-span-2 ">
-                                                        Add Relation
-                                                    </Button>
-                                                        
-                                                    </div>
-                                                    
-                                                </div>
-                                                
-
-                                        </div>
-                                    }
-                                    
-                      
-                                    />
-
-                                )
-                            })
-                        }
-                        <div className="bg-dark-100 p-2">
-                        <Button 
-                        leftIcon={
-                            <RiInsertColumnRight fontSize={25}></RiInsertColumnRight>
-                        }
-                        onClick={
-                          ()=>{
-                            addEntityField(index);
-                          }
-                        }
-                        variant="default" className="col-span-2 text-text-100   ">
-                            Add Column
-                        </Button>
-                        </div>
-                        
-                      </div>
-                      
-                    
-                    }
-                    />
-                  );
-                })}
-               
-              </ScrollArea>
-              <Button 
-                leftIcon={
-                    <MdAddCircleOutline  className="text-text-100" fontSize={25}></MdAddCircleOutline>
-                }
-                variant="default" className="col-span-2 text-text-100"
-                onClick={()=>{addEntity()}}
-                >
-                    Add Entity
-                </Button>
+            <div className="px-5 py-3 flex ">
+            <Button >
+              Next
+            </Button>
+            </div>
             </div>
             
+            
+          
           </div>
         }
       </Modal>

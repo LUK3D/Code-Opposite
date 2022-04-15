@@ -1,11 +1,8 @@
-import { BGDark, BGLight, BorderDark } from "../utils/colors";
+import { BGLight, BorderDark } from "../utils/colors";
 import { FaCog, FaDownload, FaCube,FaReact,FaVuejs,FaLaravel} from "react-icons/fa";
 import { BiPackage, BiVideo,BiChat,BiSearch} from "react-icons/bi";
-import { SiTailwindcss,SiOpenstack} from "react-icons/si";
-import { Modal, Button, Group } from '@mantine/core';
+import { SiTailwindcss} from "react-icons/si";
 
-
-import { useState } from "react";
 import ProjectSetup from "../views/ProjectSetup";
 
 

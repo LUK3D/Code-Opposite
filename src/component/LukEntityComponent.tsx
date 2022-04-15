@@ -9,7 +9,7 @@ export function LukEntityComponent(args: { title?: string; body: ReactNode,icon?
   
     return (
       <>
-        <div className="flex bg-dark-100 border-b border-dark-500 ">
+        <div className="flex bg-dark-100 border-b border-dark-500 animated animate-fade-in">
           <Input
             icon={(args.icon !=null)?args.icon:<RiTableLine></RiTableLine>}
             placeholder="Entity name"
